@@ -1,3 +1,4 @@
+ 
 /* Armazenar informacoes de veiculos
 - No maximo 10 veiculos
 marca do veiculo
@@ -10,10 +11,8 @@ placa (formato XXX-YYYY; onde X denota as letras e Y denota os numeros da placa)
 -Listar os veiculos filtrando-se por ano de fabricacao;
 -Listar os veiculos com o ano de fabricacao acima de um certo valor especificado pelo usuario. 
 - Listar os veiculos filtrando-se pelo modelo.
-
 Obs: O sistema devera armazenar os veiculos ordenados pelo ano de fabricacao, ou seja, 
 ao inserir um novo veiculo, este deve ser inserido em ordem crescente de ano de fabricacao.
-
 Funcoes: 
 - insert
 - list
@@ -22,6 +21,16 @@ Funcoes:
 - sort
 - populate
 - menu
+========================================================
+
+Desenvolvido usando DEV C++ 5.11
+
+========================================================
+
+		BUGS A SEREM DEPURADOS
+		
+		* Impressao das placas inclui a marca do carro do próximo registro
+		*Transformar todas as letras em maiusculas antes de incluir ou fazer a busca
 
 */
 
@@ -37,7 +46,7 @@ Funcoes:
 //Structs
 //Chamado aqui de dados heterogeeos
 
-//Vari�vel auxiliar de indice
+//Variï¿½vel auxiliar de indice
 int i=0;
 int j=0;
 int num=10;
@@ -59,6 +68,7 @@ struct vehicle veiculo[10];			//Criando um array de structs
 struct vehicle veiculoOrdenado[10];	//Criando um array de structs ordenada
 struct vehicle temp[1];
 
+/*
 char toUpperString(char stringParaMaiuscula[])
 {
 	for (i=0;i=strlen(stringParaMaiuscula[]);i++)
@@ -67,7 +77,7 @@ char toUpperString(char stringParaMaiuscula[])
 	}
 	return stringParaMaiuscula;
 }
-
+*/
 
 bool insert(void){				//funcao para insercao de um novo veiculo
 	//	insere um novo veiculo e incrementa countVehicle
@@ -81,14 +91,14 @@ bool insert(void){				//funcao para insercao de um novo veiculo
 		//fflush stdin para ler o teclado e fgets() para atribuir na string
 		fflush(stdin);
 		fgets(veiculo[i].brand,50,stdin);
-		//veiculo[i].brand = toupper(veiculo[i].brand);	//Deixa tudo em maiusculas
-		veiculo[i].brand = toUpperString(veiculo[i].brand);
+		//veiculo[i].brand = toupper(veiculo[i].brand);			//Deixa tudo em maiusculas
+		//veiculo[i].brand = toUpperString(veiculo[i].brand);   //Não está rodando. Depurar
 		
 		printf("Modelo: ");
 		//fflush stdin para ler o teclado e fgets() para atribuir na string
 		fflush(stdin);
 		fgets(veiculo[i].model,50,stdin);
-		veiculo[i].model = toupper(veiculo[i].model);	//Deixa tudo em maiusculas
+		//veiculo[i].model = toupper(veiculo[i].model);			//Deixa tudo em maiusculas //Não está rodando. Depurar
 		
 		printf("Ano: ");
 		scanf("%d", &veiculo[i].year);
@@ -118,8 +128,6 @@ void list(void){
 		printf("\n Modelo : %s",veiculo[i].model);
 		printf("\n Ano : %d",veiculo[i].year);
 		printf("\n Placa : %s\n",veiculo[i].plate);
-
-		getch();
 	}
 	getch();
 
@@ -234,6 +242,7 @@ void listByYear(int ano)
 		}
 		
 	}
+	getch();
 }
 
 void listByModel(char modelo[])
@@ -264,17 +273,12 @@ void listByModel(char modelo[])
 		}
 		
 	}
+	getch();
 }
 
 void menu (void)
 {
 	//
-	//Laco para deixar todos os campos year com valores 9999
-	//Para que o sort n�o encontre lixo e deixe tudo em ordem
-	for(i=o;i<10;i++)
-	{
-		veiculo[i].year=9999;
-	}
 	//
 	printf("\n === Selecione uma opcao ===\n");
 	printf("\n 1 - Inserir novo veiculo   \n");
@@ -284,6 +288,7 @@ void menu (void)
 	printf("\n 5 - Listar veiculos com filtro por modelo\n");
 	printf("\n 6 - Sair\n");
 	//
+	printf("\n\nDigite a opcao: ");
 	scanf("%d", &opcao);
 	
 	switch(opcao)
@@ -293,7 +298,7 @@ void menu (void)
 			break;
 		case 2:
 			populate();
-			printf("\nVeiculos inseirdos com sucesso.\n");
+			printf("\nVeiculos inseridos com sucesso.\n");
 			break;
 		case 3:
 			list();
@@ -308,7 +313,7 @@ void menu (void)
 			//fflush(stdin);
 			//fgets(modelo,50,stdin);
 			scanf("%s",modelo);			//Apenas com scanf deu certo, fgets inclui um caracter a mais (lf??)
-			modelo = toupper(modelo);
+			//modelo = toupper(modelo); // toupper não está rodando, favor escrever com letra maiuscula
 			listByModel(modelo);
 			break;
 		case 6:
@@ -318,11 +323,16 @@ void menu (void)
 }
 
 void main(void) {				//Funcao main
-
+	//Laco para deixar todos os campos year com valores 9999
+	//Para que o sort não encontre lixo e deixe tudo em ordem
+	for(i=0;i<10;i++)
+	{
+		veiculo[i].year=9999;
+	}
+	//
 	while (close==0)
 	{
 		menu();
 	}
 
 }//main
-
